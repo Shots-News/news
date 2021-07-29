@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "368571814384",
+    "project_id": "minesh-news-app",
+    "storage_bucket": "minesh-news-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368571814384:android:d798ed8a2bc208bb934d35",
+        "android_client_info": {
+          "package_name": "com.example.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368571814384-nfqgpb00au4r9l4orr3hrhs5luv2mmeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQWBBacZuLu7wvsaVRHwWt_GjGOlxQcxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368571814384-nfqgpb00au4r9l4orr3hrhs5luv2mmeo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
