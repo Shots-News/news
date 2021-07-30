@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_const/flutter_const.dart';
 import 'package:news/constant/colors.dart';
+import 'package:news/locator.dart';
+import 'package:news/routes/navigation_service.dart';
 import 'package:news/views/screens/start/introduction_screen.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -19,7 +21,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   void initState() {
     super.initState();
     _timer = Timer(Duration(seconds: 5), () {
-      FcNavigator().pushReplacement(context, screen: OnBoardingPage());
+      locator<NavigationService>().replaceTo(OnBoardingPage());
     });
   }
 
@@ -31,6 +33,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(ModalRoute.of(context)!.settings.name);
     return SafeArea(
       child: Material(
         color: MyColors.lightBlack,

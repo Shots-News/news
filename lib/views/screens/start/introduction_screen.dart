@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:news/constant/colors.dart';
+import 'package:news/locator.dart';
+import 'package:news/routes/navigation_service.dart';
 import 'package:news/views/screens/home/home_screen.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -13,9 +15,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => MyHomeScreen()),
-    );
+    locator<NavigationService>().replaceTo(MyHomeScreen());
   }
 
   Widget _buildImage(String assetName, [double width = 300]) {

@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_const/flutter_const.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:news/constant/app_icons.dart';
 import 'package:news/constant/colors.dart';
 import 'package:news/constant/config.dart';
 import 'package:news/constant/constant.dart';
-import 'package:news/constant/dimensions.dart';
+import 'package:news/locator.dart';
+import 'package:news/routes/navigation_service.dart';
+import 'package:news/utils/date_time_formatter.dart';
 import 'package:news/utils/url_open.dart';
 import 'package:news/utils/youtube.dart';
+import 'package:news/views/screens/home/web_view.dart';
 import 'package:news/views/widgets/widgets.dart';
 import 'package:share/share.dart';
 
@@ -21,6 +25,7 @@ class NewsCardWidget extends StatefulWidget {
     this.video,
     required this.source,
     required this.isVideo,
+    this.updateAt,
   }) : super(key: key);
 
   final String title;
@@ -29,45 +34,64 @@ class NewsCardWidget extends StatefulWidget {
   final String? video;
   final String source;
   final bool isVideo;
+  final String? updateAt;
 
   @override
   _NewsCardWidgetState createState() => _NewsCardWidgetState();
 }
 
 class _NewsCardWidgetState extends State<NewsCardWidget> {
-  int maxLine = 10;
+  bool lines = true;
+  bool speak = true;
+  final _flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    _flutterTts.setLanguage('en');
+    _flutterTts.setSpeechRate(0.4);
+    _flutterTts.setVolume(1);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final youtubeConfig = GetIt.I<YoutubeConfig>();
-    final widgets = GetIt.I<MyWidgets>();
     return Container(
       child: SingleChildScrollView(
-        physics: maxLine == 10 ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+        physics: lines ? NeverScrollableScrollPhysics() : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            widget.isVideo
-                ? Container(
-                    width: MyDimensions.width(context),
-                    height: 200,
-                    child: youtubeConfig.youtubeVideoPlayer(widget.video!),
-                  )
-                : AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Image(
-                      image: widgets.cacheImageProvider(MyConfig.baseImageUrl + widget.image!),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+              ),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: widget.isVideo
+                    ? locator<YoutubeConfig>().youtubeVideoPlayer(widget.video!)
+                    : Image(
+                        image: locator<MyWidgets>().cacheImageProvider(MyConfig.baseImageUrl + widget.image!),
+                        fit: BoxFit.fill,
+                      ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Text(
                       widget.title,
-                      style: style.subtitleBText(context)!.copyWith(wordSpacing: 2, height: 1.2),
+                      style: style.subtitleBText(context)!.copyWith(height: 1.3),
                       textAlign: TextAlign.justify,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
@@ -75,11 +99,10 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                   ),
                   fcHSizedBox1,
                   IconButton(
-                    onPressed: () => Share.share('check out my website https://example.com', subject: 'Look what I made!'),
-                    icon: Icon(
-                      MyIcons.share,
-                      size: 22,
-                    ),
+                    onPressed: () {
+                      Share.share('check out my website https://example.com', subject: 'Look what I made!');
+                    },
+                    icon: Icon(MyIcons.share, size: 22),
                   )
                 ],
               ),
@@ -87,9 +110,15 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: InkWell(
-                onTap: () {
-                  maxLine == 10 ? maxLine = 50 : maxLine = 10;
-                  setState(() {});
+                onTap: () => setState(() => lines ? lines = false : lines = true),
+                onDoubleTap: () {
+                  speak = !speak;
+                  // setState(() {});
+                  if (speak) {
+                    _flutterTts.stop();
+                  } else {
+                    _flutterTts.speak(widget.desc);
+                  }
                 },
                 child: SingleChildScrollView(
                   physics: NeverScrollableScrollPhysics(),
@@ -97,35 +126,41 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                     widget.desc,
                     style: style.bodyText(context),
                     textAlign: TextAlign.justify,
-                    maxLines: maxLine,
+                    maxLines: lines ? 12 : 50,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
             ),
+            fcVSizedBox1,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Column(
+                    children: [
+                      Text(
+                        widget.isVideo ? 'You Tube' : 'Twitter',
+                        style: style.bodyBText(context)!.copyWith(color: MyColors.white),
+                      ),
+                      fcVSizedBox,
+                      Text(locator<MyDateTime>().formateDate(widget.updateAt), style: style.xSmallBText(context)),
+                      SizedBox(height: lines ? 0 : 50)
+                    ],
+                  ),
                   InkWell(
                     onTap: () {
-                      openUrl(widget.source);
+                      locator<NavigationService>().navigateTo(MyWebViewPage(url: widget.source));
                     },
-                    child: Text(
-                      widget.isVideo ? 'You Tube' : 'Twitter',
-                      style: style.bodyBText(context)!.copyWith(color: MyColors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Icon(MyIcons.information),
                     ),
-                  ),
-                  fcVSizedBox,
-                  Text(
-                    '12 days',
-                    style: style.xSmallBText(context),
                   ),
                 ],
               ),
             ),
-            fcVSizedBox2,
-            SizedBox(height: 100),
           ],
         ),
       ),

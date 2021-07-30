@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:news/models/artical_model.dart';
 import 'package:news/repository/artical_repo.dart';
-import 'package:news/utils/ticker.dart';
 
 part 'articals_event.dart';
 part 'articals_state.dart';
