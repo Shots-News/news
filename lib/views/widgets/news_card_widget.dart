@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_const/flutter_const.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:get_it/get_it.dart';
 import 'package:news/constant/app_icons.dart';
 import 'package:news/constant/colors.dart';
 import 'package:news/constant/config.dart';
 import 'package:news/constant/constant.dart';
 import 'package:news/locator.dart';
+import 'package:news/models/artical_model.dart';
 import 'package:news/routes/navigation_service.dart';
 import 'package:news/utils/date_time_formatter.dart';
-import 'package:news/utils/url_open.dart';
 import 'package:news/utils/youtube.dart';
 import 'package:news/views/screens/home/web_view.dart';
 import 'package:news/views/widgets/widgets.dart';
@@ -19,22 +18,10 @@ import 'package:share/share.dart';
 class NewsCardWidget extends StatefulWidget {
   const NewsCardWidget({
     Key? key,
-    required this.title,
-    required this.desc,
-    this.image,
-    this.video,
-    required this.source,
-    required this.isVideo,
-    this.updateAt,
+    required this.articalModel,
   }) : super(key: key);
 
-  final String title;
-  final String desc;
-  final String? image;
-  final String? video;
-  final String source;
-  final bool isVideo;
-  final String? updateAt;
+  final ArticalModel articalModel;
 
   @override
   _NewsCardWidgetState createState() => _NewsCardWidgetState();
@@ -74,10 +61,10 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
               ),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: widget.isVideo
-                    ? locator<YoutubeConfig>().youtubeVideoPlayer(widget.video!)
+                child: widget.articalModel.isVideo!
+                    ? locator<YoutubeConfig>().youtubeVideoPlayer(widget.articalModel.videoUrl!)
                     : Image(
-                        image: locator<MyWidgets>().cacheImageProvider(MyConfig.baseImageUrl + widget.image!),
+                        image: locator<MyWidgets>().cacheImageProvider(MyConfig.baseImageUrl + widget.articalModel.thumnail!),
                         fit: BoxFit.fill,
                       ),
               ),
@@ -90,7 +77,7 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.title,
+                      widget.articalModel.title!,
                       style: style.subtitleBText(context)!.copyWith(height: 1.3),
                       textAlign: TextAlign.justify,
                       maxLines: 3,
@@ -110,20 +97,19 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: InkWell(
-                onTap: () => setState(() => lines ? lines = false : lines = true),
+                onTap: () => setState(() => lines = !lines),
                 onDoubleTap: () {
                   speak = !speak;
-                  // setState(() {});
                   if (speak) {
                     _flutterTts.stop();
                   } else {
-                    _flutterTts.speak(widget.desc);
+                    _flutterTts.speak(widget.articalModel.description!);
                   }
                 },
                 child: SingleChildScrollView(
                   physics: NeverScrollableScrollPhysics(),
                   child: Text(
-                    widget.desc,
+                    widget.articalModel.description!,
                     style: style.bodyText(context),
                     textAlign: TextAlign.justify,
                     maxLines: lines ? 12 : 50,
@@ -141,17 +127,17 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                   Column(
                     children: [
                       Text(
-                        widget.isVideo ? 'You Tube' : 'Twitter',
+                        widget.articalModel.categoryName!,
                         style: style.bodyBText(context)!.copyWith(color: MyColors.white),
                       ),
                       fcVSizedBox,
-                      Text(locator<MyDateTime>().formateDate(widget.updateAt), style: style.xSmallBText(context)),
+                      Text(locator<MyDateTime>().formateDate(widget.articalModel.updateAt), style: style.xSmallBText(context)),
                       SizedBox(height: lines ? 0 : 50)
                     ],
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().navigateTo(MyWebViewPage(url: widget.source));
+                      locator<NavigationService>().navigateTo(MyWebViewPage(url: widget.articalModel.sourceUrl!));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8),

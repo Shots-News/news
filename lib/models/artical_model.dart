@@ -7,9 +7,21 @@ class ArticalModel {
   final String? sourceUrl;
   final bool? isVideo;
   final String? updateAt;
+  final int? categoryId;
+  final String? categoryName;
 
-  ArticalModel(
-      {this.id, this.title, this.description, this.thumnail, this.videoUrl, this.sourceUrl, this.isVideo, this.updateAt});
+  ArticalModel({
+    this.id,
+    this.title,
+    this.description,
+    this.thumnail,
+    this.videoUrl,
+    this.sourceUrl,
+    this.isVideo,
+    this.updateAt,
+    this.categoryId,
+    this.categoryName,
+  });
 
   factory ArticalModel.fromJson(Map<String, dynamic> json) {
     return ArticalModel(
@@ -21,6 +33,8 @@ class ArticalModel {
       sourceUrl: json['source_url'],
       isVideo: json['is_video'],
       updateAt: json['updated_at'],
+      categoryId: json['category_id']['id'],
+      categoryName: json['category_id']['name'],
     );
   }
 

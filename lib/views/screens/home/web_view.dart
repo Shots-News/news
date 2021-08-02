@@ -76,6 +76,7 @@ class _MyWebViewPageState extends State<MyWebViewPage> {
           toolbarHeight: 30,
           backwardsCompatibility: false,
           automaticallyImplyLeading: false,
+          backgroundColor: MyColors.lightBlack,
           actions: [
             PopupMenuButton(
               onSelected: _select,
@@ -86,7 +87,6 @@ class _MyWebViewPageState extends State<MyWebViewPage> {
                     child: InkWell(
                       onTap: () async {
                         if (choice.index == 1) {
-                          print('1');
                           await webViewController?.reload();
                         }
                         if (choice.index == 2) {
@@ -97,7 +97,6 @@ class _MyWebViewPageState extends State<MyWebViewPage> {
                           });
                         }
                         if (choice.index == 3) {
-                          // webViewController.
                           await webViewController?.getUrl().then((value) => openUrl(value.toString()));
                         }
                       },
@@ -106,7 +105,10 @@ class _MyWebViewPageState extends State<MyWebViewPage> {
                         children: [
                           Text(choice.title),
                           fcHSizedBox2,
-                          Icon(choice.icon),
+                          Icon(
+                            choice.icon,
+                            color: Theme.of(context).primaryColorLight,
+                          ),
                         ],
                       ),
                     ),
