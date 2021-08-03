@@ -4,9 +4,14 @@ import 'package:flutter_const/flutter_const.dart';
 import 'package:news/constant/app_icons.dart';
 import 'package:news/constant/colors.dart';
 import 'package:news/constant/constant.dart';
+import 'package:news/locator.dart';
+import 'package:news/services/firebase_auth.dart';
+import 'package:news/services/firebase_service.dart';
 import 'package:news/views/screens/categories/categories_screen.dart';
 import 'package:news/views/screens/home/news_page_view.dart';
 import 'package:share/share.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyHomeScreen extends StatefulWidget {
   const MyHomeScreen({Key? key}) : super(key: key);
@@ -36,6 +41,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<User?>(context);
+    final AuthService _authService = AuthService();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -56,7 +64,23 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             color: MyColors.lightBlack,
             child: Column(
               children: [
-                DrawerHeader(child: Container()),
+                DrawerHeader(
+                  child: Container(
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          try {
+                            _authService.signInWIthGoogle();
+                            setState(() {});
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                        child: Text(_user == null ? 'Login' : 'Log out'),
+                      ),
+                    ),
+                  ),
+                ),
                 DrawerListTile(title: 'News', iconData: MyIcons.home),
                 DrawerListTile(
                   title: 'Categories',

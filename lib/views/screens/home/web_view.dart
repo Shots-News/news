@@ -20,7 +20,7 @@ class MyWebViewPage extends StatefulWidget {
 
 class _MyWebViewPageState extends State<MyWebViewPage> {
   final GlobalKey webViewKey = GlobalKey();
-  Choice _selectedChoice = choices[0];
+  Choice selectedChoice = choices[0];
   var _currentUrl;
 
   InAppWebViewController? webViewController;
@@ -64,7 +64,7 @@ class _MyWebViewPageState extends State<MyWebViewPage> {
 
   void _select(Choice choice) {
     setState(() {
-      _selectedChoice = choice;
+      selectedChoice = choice;
     });
   }
 

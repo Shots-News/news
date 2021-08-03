@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:news/models/user_model.dart';
+import 'package:flutter/services.dart';
 
 class AuthService with ChangeNotifier {
   /// [Firebase Auth Instance]
@@ -60,14 +61,9 @@ class AuthService with ChangeNotifier {
         accessToken: _googleSignInAuthentication.accessToken,
         idToken: _googleSignInAuthentication.idToken,
       );
-
       UserCredential _credential = await _firebaseAuth.signInWithCredential(_authCredential);
-
       User _user = _credential.user!;
-      // create new user data on firestore
-      // await userUpdate(_user);
-
-      // return
+      
       return _userModel(_user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -75,6 +71,10 @@ class AuthService with ChangeNotifier {
       } else {
         print('try again later $e');
       }
+    } on PlatformException catch (err) {
+      print('PlatformException $err ${err.code} ${err.message}');
+    } catch (err) {
+      print('error $err');
     }
   }
 

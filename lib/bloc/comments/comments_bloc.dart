@@ -61,7 +61,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
         throw Exception("Last doc is not set");
       }
       final index = comments.length;
-      subscriptions.add(CommentRepository.instance.getPostsPage(lastDoc!).listen((event) {
+      subscriptions.add(CommentRepository.instance.getPostsPage(lastDoc!, newsID: newsID).listen((event) {
         handleStreamEvent(index, event);
       }));
     }

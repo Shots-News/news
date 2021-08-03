@@ -12,10 +12,15 @@ class CommentRepository {
 
   Stream<QuerySnapshot> getPosts(int newsID) {
     //.where('newsId', isEqualTo: newsID)
-    return _ref.orderBy('createdAt', descending: true).limit(15).snapshots();
+    return _ref.where('newsId', isEqualTo: newsID).orderBy('createdAt', descending: true).limit(15).snapshots();
   }
 
-  Stream<QuerySnapshot> getPostsPage(DocumentSnapshot lastDoc) {
-    return _ref.orderBy('createdAt', descending: true).startAfterDocument(lastDoc).limit(15).snapshots();
+  Stream<QuerySnapshot> getPostsPage(DocumentSnapshot lastDoc, {required int newsID}) {
+    return _ref
+        .where('newsId', isEqualTo: newsID)
+        .orderBy('createdAt', descending: true)
+        .startAfterDocument(lastDoc)
+        .limit(15)
+        .snapshots();
   }
 }
