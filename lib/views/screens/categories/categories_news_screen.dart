@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/bloc/articals/articals_bloc.dart';
-import 'package:news/models/artical_model.dart';
+import 'package:news/bloc/articles/articles_bloc.dart';
+import 'package:news/models/article_model.dart';
 import 'package:news/views/screens/messages/comment_screen.dart';
 import 'package:news/views/widgets/news_card_widget.dart';
 
@@ -14,17 +14,17 @@ class MyCategoryNewsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          child: BlocBuilder<ArticalsBloc, ArticalsState>(
-            builder: (BuildContext context, ArticalsState state) {
-              if (state is ArticalsError) {
+          child: BlocBuilder<ArticlesBloc, ArticlesState>(
+            builder: (BuildContext context, ArticlesState state) {
+              if (state is ArticlesError) {
                 final error = state.error;
                 String message = '${error.message}\nTap to Retry.';
                 return Text(message);
-              } else if (state is ArticalsLoaded) {
-                List<ArticalModel> articals = state.artical;
+              } else if (state is ArticlesLoaded) {
+                List<ArticleModel> articals = state.articles;
                 return _pageViewBuilder(articals);
-              } else if (state is ArticalsLoading) {
-                List<ArticalModel> articals = state.artical!;
+              } else if (state is ArticlesLoading) {
+                List<ArticleModel> articals = state.articles!;
                 return _pageViewBuilder(articals);
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -37,7 +37,7 @@ class MyCategoryNewsScreen extends StatelessWidget {
   }
 
   /// For Bloc
-  _pageViewBuilder(List<ArticalModel> articals) {
+  _pageViewBuilder(List<ArticleModel> articals) {
     return PageView.builder(
       physics: BouncingScrollPhysics(),
       itemCount: articals.length,

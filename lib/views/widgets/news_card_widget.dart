@@ -4,10 +4,9 @@ import 'package:flutter_const/flutter_const.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:news/constant/app_icons.dart';
 import 'package:news/constant/colors.dart';
-import 'package:news/constant/config.dart';
 import 'package:news/constant/constant.dart';
 import 'package:news/locator.dart';
-import 'package:news/models/artical_model.dart';
+import 'package:news/models/article_model.dart';
 import 'package:news/routes/navigation_service.dart';
 import 'package:news/utils/date_time_formatter.dart';
 import 'package:news/utils/youtube.dart';
@@ -21,7 +20,7 @@ class NewsCardWidget extends StatefulWidget {
     required this.articalModel,
   }) : super(key: key);
 
-  final ArticalModel articalModel;
+  final ArticleModel articalModel;
 
   @override
   _NewsCardWidgetState createState() => _NewsCardWidgetState();
@@ -63,10 +62,7 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                 aspectRatio: 16 / 9,
                 child: widget.articalModel.isVideo!
                     ? locator<YoutubeConfig>().youtubeVideoPlayer(widget.articalModel.videoUrl!)
-                    : Image(
-                        image: locator<MyWidgets>().cacheImageProvider(MyConfig.baseImageUrl + widget.articalModel.thumnail!),
-                        fit: BoxFit.fill,
-                      ),
+                    : locator<MyWidgets>().cacheImage(widget.articalModel.thumnail!),
               ),
             ),
             Padding(

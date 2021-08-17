@@ -5,15 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_const/flutter_const.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:news/bloc/articles/articles_bloc.dart';
 import 'package:news/bloc/categories/categories_bloc.dart';
 import 'package:news/locator.dart';
-import 'package:news/repository/artical_repo.dart';
+import 'package:news/repository/article_repo.dart';
 import 'package:news/routes/navigation_service.dart';
 import 'package:news/services/ads_state.dart';
 import 'package:news/services/firebase_auth.dart';
 import 'package:news/views/screens/home/home_screen.dart';
+import 'package:news/views/screens/start/splash_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:news/bloc/articals/articals_bloc.dart';
 import 'package:news/repository/category_repo.dart';
 
 void main() async {
@@ -33,15 +34,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         StreamProvider<User?>.value(initialData: null, value: AuthService().user),
         ChangeNotifierProvider<CategoryService>(create: (_) => CategoryService()),
-        ChangeNotifierProvider<ArticalService>(create: (_) => ArticalService()),
-        BlocProvider<ArticalsBloc>(create: (_) => ArticalsBloc(articalRepository: ArticalService())),
+        ChangeNotifierProvider<ArticleService>(create: (_) => ArticleService()),
+        BlocProvider<ArticlesBloc>(create: (_) => ArticlesBloc(articleRepository: ArticleService())),
         BlocProvider<CategoriesBloc>(create: (_) => CategoriesBloc(categoriesRepository: CategoryService())),
       ],
       child: MaterialApp(

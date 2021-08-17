@@ -4,9 +4,7 @@ import 'package:flutter_const/flutter_const.dart';
 import 'package:news/constant/app_icons.dart';
 import 'package:news/constant/colors.dart';
 import 'package:news/constant/constant.dart';
-import 'package:news/locator.dart';
 import 'package:news/services/firebase_auth.dart';
-import 'package:news/services/firebase_service.dart';
 import 'package:news/views/screens/categories/categories_screen.dart';
 import 'package:news/views/screens/home/news_page_view.dart';
 import 'package:share/share.dart';
@@ -21,24 +19,6 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  // BannerAd? bannerAd;
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   final adState = Provider.of<AdsState>(context);
-  //   adState.initialization.then((value) {
-  //     setState(() {
-  //       bannerAd = BannerAd(
-  //         size: AdSize.banner,
-  //         adUnitId: adState.bannerAdsUnitID,
-  //         listener: adState.bannerAdListener,
-  //         request: AdRequest(),
-  //       )..load();
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<User?>(context);

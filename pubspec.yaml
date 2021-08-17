@@ -23,10 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Enternal Packages
   bubble: ^1.2.1
   cached_network_image: ^3.1.0
   cloud_firestore: ^2.4.0
   cupertino_icons: ^1.0.2
+  dio_http_cache: ^0.3.0
   equatable: ^2.0.3
   firebase_auth: ^3.0.1
   firebase_core: ^1.4.0
@@ -38,14 +41,12 @@ dependencies:
   get_it: ^7.2.0
   google_mobile_ads: ^0.13.2
   google_sign_in: ^5.0.5
-  hive: ^2.0.4
-  hive_flutter: ^1.1.0
   intl: ^0.17.0
   introduction_screen: ^2.1.0
   page_transition: ^2.0.2
-  path_provider: ^2.0.2
   provider: ^5.0.0
   share: ^2.0.4
+  shimmer: ^2.0.0
   supabase: ^0.0.7
   url_launcher: ^6.0.9
   youtube_player_iframe: ^2.2.0

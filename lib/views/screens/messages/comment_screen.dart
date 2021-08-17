@@ -9,13 +9,13 @@ import 'package:news/constant/colors.dart';
 import 'package:news/constant/constant.dart';
 import 'package:news/constant/dimensions.dart';
 import 'package:news/locator.dart';
-import 'package:news/models/artical_model.dart';
+import 'package:news/models/article_model.dart';
 import 'package:news/services/firebase_service.dart';
 import 'package:news/views/widgets/message_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyCommentScreen extends StatefulWidget {
-  final ArticalModel articalModel;
+  final ArticleModel articalModel;
   final PageController controller;
   final int newsId;
 

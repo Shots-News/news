@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:news/constant/config.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyExpandedWidget extends StatelessWidget {
   const MyExpandedWidget({
@@ -25,16 +27,27 @@ class MyExpandedWidget extends StatelessWidget {
 class MyWidgets {
   Widget cacheImage(String url) {
     return CachedNetworkImage(
-      imageUrl: url,
-      placeholder: (context, url) => MyExpandedWidget(
-        color: Colors.grey[50],
-      ),
-      errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
-      progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+      imageUrl: MyConfig.baseImageUrl + url,
+      fit: BoxFit.fill,
+      errorWidget: (context, url, error) => myShimmer(),
+      progressIndicatorBuilder: (context, url, downloadProgress) => myShimmer(),
     );
   }
+}
 
-  ImageProvider cacheImageProvider(String url, {int? maxHeight, int? maxWidth}) {
-    return CachedNetworkImageProvider(url, maxHeight: maxHeight, maxWidth: maxWidth);
-  }
+Widget myShimmer() {
+  return SizedBox(
+    child: Shimmer.fromColors(
+      baseColor: Colors.white30,
+      highlightColor: Color(0xFFF4F4F4),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Container(
+          width: double.infinity,
+          height: 100,
+          color: Colors.green[50],
+        ),
+      ),
+    ),
+  );
 }

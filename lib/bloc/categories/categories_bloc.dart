@@ -27,7 +27,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       case CategoriesEvent.fetchCategories:
         yield CategoriesLoading(categories: _list);
         try {
-          categoriesList = await categoriesRepository.getArticalsList();
+          categoriesList = await categoriesRepository.getCategoriesList();
           yield CategoriesLoaded(categories: categoriesList);
         } on SocketException {
           yield CategoriesError(error: 'No Internet');
