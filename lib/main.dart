@@ -13,7 +13,6 @@ import 'package:news/routes/navigation_service.dart';
 import 'package:news/services/ads_state.dart';
 import 'package:news/services/firebase_auth.dart';
 import 'package:news/views/screens/home/home_screen.dart';
-import 'package:news/views/screens/start/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:news/repository/category_repo.dart';
 
