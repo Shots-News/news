@@ -11,6 +11,8 @@ import 'package:news/routes/navigation_service.dart';
 import 'package:news/utils/date_time_formatter.dart';
 import 'package:news/utils/youtube.dart';
 import 'package:news/views/screens/home/web_view.dart';
+import 'package:news/views/screens/messages/commentArgs.dart';
+import 'package:news/views/screens/messages/comment_screen.dart';
 import 'package:news/views/widgets/widgets.dart';
 import 'package:share/share.dart';
 
@@ -72,12 +74,23 @@ class _NewsCardWidgetState extends State<NewsCardWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Text(
-                      widget.articalModel.title!,
-                      style: style.subtitleBText(context)!.copyWith(height: 1.3),
-                      textAlign: TextAlign.justify,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+                    child: InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (_) => MyCommentScreen(),
+                        //     settings: RouteSettings(arguments: CommentArgs(widget.articalModel.id)),
+                        //   ),
+                        // );
+                      },
+                      child: Text(
+                        widget.articalModel.title!,
+                        style: style.subtitleBText(context)!.copyWith(height: 1.3),
+                        textAlign: TextAlign.justify,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   fcHSizedBox1,

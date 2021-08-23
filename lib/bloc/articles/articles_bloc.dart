@@ -10,7 +10,7 @@ part 'articles_event.dart';
 part 'articles_state.dart';
 
 class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
-  final ArticlesRepository articleRepository;
+  final ArticleService articleRepository;
   late List<ArticleModel> articleList;
 
   List<ArticleModel>? _list = [];

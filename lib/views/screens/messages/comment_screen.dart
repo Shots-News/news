@@ -20,6 +20,7 @@ class MyCommentScreen extends StatefulWidget {
   final int newsId;
 
   MyCommentScreen({Key? key, required this.articalModel, required this.controller, required this.newsId}) : super(key: key);
+  // MyCommentScreen({Key? key}) : super(key: key);
 
   @override
   _MyCommentScreenState createState() => _MyCommentScreenState();
@@ -27,7 +28,7 @@ class MyCommentScreen extends StatefulWidget {
 
 class _MyCommentScreenState extends State<MyCommentScreen> {
   final TextEditingController _controller = TextEditingController();
-  CommentsBloc _commentsBloc = CommentsBloc(7);
+  late CommentsBloc _commentsBloc = CommentsBloc(widget.newsId);
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _MyCommentScreenState extends State<MyCommentScreen> {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<User?>(context);
+
     final double bottomSize = 60;
     return SafeArea(
       child: WillPopScope(
@@ -77,7 +79,6 @@ class _MyCommentScreenState extends State<MyCommentScreen> {
                         child: CircularProgressIndicator(),
                       );
                     } else if (state is CommentsStateLoadSuccess) {
-                      print(state.comments);
                       return MessagesList(
                         messages: state.comments,
                         userId: _user != null ? _user.uid : '0',
@@ -126,9 +127,11 @@ class _MyCommentScreenState extends State<MyCommentScreen> {
                                       .sendComment(
                                         messageBody: comment,
                                         newsId: widget.articalModel.id!,
+                                        // newsId: 5,
                                         senderId: _user.uid,
                                         senderName: _user.displayName!,
                                         newsName: widget.articalModel.title!,
+                                        // newsName: "Test News",
                                       )
                                       .whenComplete(() => _controller.clear());
                                 }

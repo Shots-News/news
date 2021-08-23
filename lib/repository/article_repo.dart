@@ -4,11 +4,11 @@ import 'package:news/models/article_model.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:dio/dio.dart';
 
-abstract class ArticlesRepository {
-  Future<List<ArticleModel>> getArticlesList();
-}
+// abstract class ArticlesRepository {
+//   Future<List<ArticleModel>> getArticlesList();
+// }
 
-class ArticleService with ChangeNotifier implements ArticlesRepository {
+class ArticleService with ChangeNotifier {
   ArticleService() {
     getArticlesList();
   }
@@ -18,8 +18,11 @@ class ArticleService with ChangeNotifier implements ArticlesRepository {
     return [..._list];
   }
 
-  @override
-  Future<List<ArticleModel>> getArticlesList() async {
+  // String getTableName(id) {
+  //   return id == 0 ? MyConfig.articalTableName : MyConfig.articalTableName + "&category_id=eq.$id";
+  // }
+
+  Future<List<ArticleModel>> getArticlesList({int categoriesID = 2}) async {
     DioCacheManager _dioCacheManager;
     _dioCacheManager = DioCacheManager(
       CacheConfig(

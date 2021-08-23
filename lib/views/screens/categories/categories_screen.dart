@@ -68,7 +68,11 @@ class _MyCategoriesScreenState extends State<MyCategoriesScreen> {
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
-            FcNavigator().push(context, screen: MyCategoryNewsScreen());
+            FcNavigator().push(
+              context,
+              screen: MyCategoryNewsScreen(),
+              settings: RouteSettings(arguments: CategoryModel(id: _list[index].id)),
+            );
           },
           child: Container(
             height: 150,
